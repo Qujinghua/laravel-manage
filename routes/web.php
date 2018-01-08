@@ -14,3 +14,16 @@
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::get('/test', function () {
+    return 'test';
+});
+
+$api = app('Dingo\Api\Routing\Router');
+$api->version('v1', function ($api) {
+
+    $api->get('test2', function () {
+        return 'It is ok';
+    });
+
+});
