@@ -48,6 +48,7 @@ class UserController extends Controller
     $userList = DB::select('select * from laravel_manage_user');
     $isUser = DB::table('laravel_manage_user')->whereRaw('name = ? or phone = ? or email = ?',[$username,$username,$username])->get();
     return $isUser;
+    
     // foreach($userList as $el) {
     //   if ($el['name'] == $username || $el['phone'] == $username || $el['email'] == $username) {
     //     $userData = [
