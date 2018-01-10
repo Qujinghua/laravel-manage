@@ -19,11 +19,15 @@ Route::get('/test', function () {
     return 'test';
 });
 
+// Route::any('test1', ['uses' => 'UserController@test1']);
+
+
+
 $api = app('Dingo\Api\Routing\Router');
 $api->version('v1', function ($api) {
-
-    $api->get('test2', function () {
-        return 'It is ok';
+    $api->group(['namespace' => 'App\Http\Controllers\Api'], function ($api) {
+        $api->get('getUser', 'UserController@getUser');
+        $api->any('userLogin', 'UserController@userLogin');
     });
 
 });
