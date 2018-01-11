@@ -19,7 +19,7 @@ Route::get('/test', function () {
     return 'test';
 });
 
-// Route::any('test1', ['uses' => 'UserController@test1']);
+// Route::any('userLogin', ['uses' => 'UserController@userLogin']);
 
 
 
@@ -28,6 +28,7 @@ $api->version('v1', function ($api) {
     $api->group(['namespace' => 'App\Http\Controllers\Api'], function ($api) {
         $api->get('getUser', 'UserController@getUser');
         $api->any('userLogin', 'UserController@userLogin');
+        $api->any('testDB', 'UserController@testDB');
     });
 
 });
