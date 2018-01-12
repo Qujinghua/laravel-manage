@@ -19,16 +19,21 @@ Route::get('/test', function () {
     return 'test';
 });
 
+Route::any('/getUser', 'UserController@getUser');
+Route::any('/userLogin', 'UserController@userLogin');
+Route::any('/testDB', 'UserController@testDB');
+
+
 // Route::any('userLogin', ['uses' => 'UserController@userLogin']);
 
 
+// Dingo api弃用
+// $api = app('Dingo\Api\Routing\Router');
+// $api->version('v1', function ($api) {
+//     $api->group(['namespace' => 'App\Http\Controllers\Api'], function ($api) {
+//         $api->get('getUser', 'UserController@getUser');
+//         $api->any('userLogin', 'UserController@userLogin');
+//         $api->any('testDB', 'UserController@testDB');
+//     });
 
-$api = app('Dingo\Api\Routing\Router');
-$api->version('v1', function ($api) {
-    $api->group(['namespace' => 'App\Http\Controllers\Api'], function ($api) {
-        $api->get('getUser', 'UserController@getUser');
-        $api->any('userLogin', 'UserController@userLogin');
-        $api->any('testDB', 'UserController@testDB');
-    });
-
-});
+// });
