@@ -22,7 +22,7 @@ Route::get('/test', function () {
 Route::any('/getUser', 'UserController@getUser');
 Route::any('/userLogin', 'UserController@userLogin');
 Route::any('/testDB', 'UserController@testDB');
-
+Route::any('/islogin', 'UserController@islogin');
 
 // Route::any('userLogin', ['uses' => 'UserController@userLogin']);
 

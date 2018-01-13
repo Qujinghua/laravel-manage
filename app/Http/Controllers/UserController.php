@@ -55,19 +55,21 @@ class UserController extends Controller
     // Session::put('pwd',$pwd);  
     // Session::save();  
     // $userList = DB::select('select * from laravel_manage_user');
+
     $isUser = DB::table('laravel_manage_user')
     ->whereRaw('name = ? or phone = ? or email = ?',[$username,$username,$username])
-    ->pluck('id');
+    ->get();
+    $isUser = json_decode($isUser, true);
     if (count($isUser)) {
-      $isUserPwd = DB::table('laravel_manage_user')
-      ->whereRaw('name = ? or phone = ? or email = ?',[$username,$username,$username])
-      ->pluck('pwd');
-      if ($isUserPwd[0]==$pwd) {
+      $isPwd = $isUser[0]["pwd"];
+      if ($isPwd==$pwd) {
         $loginResponse = [
           'message' => '登录成功！',
           'status' => 200
         ];
-        
+        Session::put('username',$username);
+        Session::put('id',$isUser[0]["id"]);  
+        Session::save();  
         return Response::json($loginResponse);
       } else {
         $loginResponse = [
@@ -77,30 +79,28 @@ class UserController extends Controller
         return Response::json($loginResponse);
       }
     } else {
-      $loginResponse = [
+      $Response = [
         'message' => '用户名错误！',
         'status' => 401
       ];
-      return Response::json($loginResponse);
+      return Response::json($Response);
     }
-    
-    
     
   }
 
   public static  function islogin(){  
-    $team_id=Session::get('team_id');  
-    $uuid=Session::get('uuid');  
-    $key=Session::get('key');  
-    if(!empty($team_id)&&!empty($uuid)){  
-        if($key != 1234){  
-            echo "没有权限";  
-            exit;  
-        }  
-    }else{  
-        echo "没有权限";  
-        exit;  
-    }  
+    $username=Session::get('username');  
+    $id=Session::get('id');  
+    return session()->all();
+    // if(!empty($username)&&!empty($pwd)){  
+    //     if($key != 1234){  
+    //         echo "没有权限";  
+    //         exit;  
+    //     }  
+    // }else{  
+    //     echo "没有权限";  
+    //     exit;  
+    // }  
   }  
 
   // 查询构造器数据库操作
