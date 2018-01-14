@@ -19,10 +19,14 @@ Route::get('/test', function () {
     return 'test';
 });
 
-Route::any('/getUser', 'UserController@getUser');
 Route::any('/userLogin', 'UserController@userLogin');
 Route::any('/testDB', 'UserController@testDB');
-Route::any('/islogin', 'UserController@islogin');
+Route::get('/islogin', 'UserController@islogin');
+
+Route::group(['middleware' => ['checklogin','web']], function () {
+    Route::any('/getUser', 'UserController@getUser');
+
+});
 
 // Route::any('userLogin', ['uses' => 'UserController@userLogin']);
 

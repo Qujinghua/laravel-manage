@@ -65,6 +65,8 @@ class UserController extends Controller
       if ($isPwd==$pwd) {
         $loginResponse = [
           'message' => '登录成功！',
+          'username' => $isUser[0]["name"],
+          'userid' => $isUser[0]["id"],
           'status' => 200
         ];
         Session::put('username',$username);
@@ -91,7 +93,20 @@ class UserController extends Controller
   public static  function islogin(){  
     $username=Session::get('username');  
     $id=Session::get('id');  
-    return session()->all();
+    if ($id) {
+      $Response = [
+        'message' => '存在用户！',
+        'status' => 200
+      ];
+      return Response::json($Response);
+    } else {
+      $Response = [
+        'message' => '登录已过期！',
+        'status' => 401
+      ];
+      return Response::json($Response);
+    }
+    
     // if(!empty($username)&&!empty($pwd)){  
     //     if($key != 1234){  
     //         echo "没有权限";  
