@@ -21,7 +21,6 @@ class UserController extends Controller
     try {
       $user = DB::select('select * from laravel_manage_user');
       return Response::json($user);
-
     } catch (Exception $e) {
         report($e);
         return false;
