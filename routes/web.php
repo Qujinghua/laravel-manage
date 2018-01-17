@@ -25,7 +25,7 @@ Route::get('/islogin', 'UserController@islogin');
 
 Route::group(['middleware' => ['checklogin','web']], function () {
     Route::any('/getUser', 'UserController@getUser');
-
+    Route::any('/getDepartment', 'DepartmentController@getDepartment');
 });
 
 // Route::any('userLogin', ['uses' => 'UserController@userLogin']);
