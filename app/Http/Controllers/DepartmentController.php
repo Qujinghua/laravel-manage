@@ -18,4 +18,25 @@ class DepartmentController extends Controller {
         return false;
     }
   }
+  public function updateDepartment (Request $request) {
+    $name = $request->input('name');
+    $address = $request->input('address');
+    try {
+      $addDepartment = DB::table('laravel_manage_department')->insert(
+        ['name' => $name, 'address' => $address]
+      );
+      $response = [
+        'message' => '新增成功',
+        'status' => 200
+      ];
+      return Response::json($response);
+    } catch (Exception $e) {
+      report($e);
+      return false;
+    }
+  }
+
+
+
+
 }
