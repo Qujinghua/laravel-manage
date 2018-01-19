@@ -19,7 +19,7 @@ class UserController extends Controller
   public function getUser()
   {
     try {
-      $user = DB::select('select * from laravel_manage_user');
+      $user = DB::select('select name,phone,email,department,isSuperAdmin from laravel_manage_user');
       return Response::json($user);
     } catch (Exception $e) {
         report($e);
