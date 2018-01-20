@@ -19,8 +19,29 @@ class UserController extends Controller
   public function getUser()
   {
     try {
-      $user = DB::select('select name,phone,email,department,isSuperAdmin from laravel_manage_user');
-      return Response::json($user);
+      $page = input::get('page');
+      $size = input::get('size');
+      $keyword = input::get('keyword');
+      $dataStart = ($page-1)*$size;
+      // $user = DB::select("select name,phone,email,department,isSuperAdmin from laravel_manage_user limit {$dataStart},{$size}");
+      $user = DB::table('laravel_manage_user')
+      ->select('name','phone','email','department','isSuperAdmin')
+      ->where('name', 'like', $keyword.'%')
+      ->orWhere('department', 'like', $keyword.'%')
+      ->offset($dataStart)
+      ->limit($size)
+      ->get();
+      $count = DB::table('laravel_manage_user')
+      ->select('name','phone','email','department','isSuperAdmin')
+      ->where('name', 'like', $keyword.'%')
+      ->orWhere('department', 'like', $keyword.'%')
+      ->count();
+      // $count = DB::table('laravel_manage_user')->count();
+      $response = [
+        'data' => $user,
+        'total' => $count
+      ];
+      return Response::json($response);
     } catch (Exception $e) {
         report($e);
         return false;
@@ -100,9 +121,23 @@ class UserController extends Controller
   public function test2 () {
     $page = input::get('page');
     $size = input::get('size');
-    $user = DB::select('select name,phone,email,department,isSuperAdmin from laravel_manage_user')
-    ->offset(0)->limit(2).get();
-    return Response::json($user);
+    $keyword = input::get('keyword');
+    $dataStart = ($page-1)*$size;
+    // $user = DB::select("select name,phone,email,department,isSuperAdmin from laravel_manage_user limit {$dataStart},{$size}");
+    $user = DB::table('laravel_manage_user')
+    ->select('name','phone','email','department','isSuperAdmin')
+    ->where('name', 'like', $keyword.'%')
+    ->orWhere('department', 'like', $keyword.'%')
+    ->offset($dataStart)
+    ->limit($size)
+    ->get();
+    $count = count($user);
+    // $count = DB::table('laravel_manage_user')->count();
+    $response = [
+      'data' => $user,
+      'total' => $count
+    ];
+    return Response::json($response);
   }
 
   // 查询构造器数据库操作
