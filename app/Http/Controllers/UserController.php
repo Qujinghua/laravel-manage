@@ -44,17 +44,6 @@ class UserController extends Controller
   {
     $username = $request->input('username');
     $pwd = $request->input('pwd');
-    // if(empty($username)){  
-    //   $username=Session::get('username');  
-    // }  
-    // if(empty($pwd)){  
-    //   $pwd=Session::get('pwd');  
-    // }  
-    // Session::put('username',$username);  
-    // Session::put('pwd',$pwd);  
-    // Session::save();  
-    // $userList = DB::select('select * from laravel_manage_user');
-
     $isUser = DB::table('laravel_manage_user')
     ->whereRaw('name = ? or phone = ? or email = ?',[$username,$username,$username])
     ->get();
@@ -65,6 +54,7 @@ class UserController extends Controller
         $loginResponse = [
           'message' => '登录成功！',
           'username' => $isUser[0]["name"],
+          'isSuperAdmin' => $isUser[0]["isSuperAdmin"],
           'userid' => $isUser[0]["id"],
           'status' => 200
         ];
@@ -105,17 +95,15 @@ class UserController extends Controller
       ];
       return Response::json($Response);
     }
-    
-    // if(!empty($username)&&!empty($pwd)){  
-    //     if($key != 1234){  
-    //         echo "没有权限";  
-    //         exit;  
-    //     }  
-    // }else{  
-    //     echo "没有权限";  
-    //     exit;  
-    // }  
   }  
+
+  public function test2 () {
+    $page = input::get('page');
+    $size = input::get('size');
+    $user = DB::select('select name,phone,email,department,isSuperAdmin from laravel_manage_user')
+    ->offset(0)->limit(2).get();
+    return Response::json($user);
+  }
 
   // 查询构造器数据库操作
   public function testDB() {
