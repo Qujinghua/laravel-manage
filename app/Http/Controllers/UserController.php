@@ -25,18 +25,17 @@ class UserController extends Controller
       $dataStart = ($page-1)*$size;
       // $user = DB::select("select name,phone,email,department,isSuperAdmin from laravel_manage_user limit {$dataStart},{$size}");
       $user = DB::table('laravel_manage_user')
-      ->select('name','phone','email','department','isSuperAdmin')
+      ->select('id','name','phone','email','department','isSuperAdmin')
       ->where('name', 'like', $keyword.'%')
       ->orWhere('department', 'like', $keyword.'%')
       ->offset($dataStart)
       ->limit($size)
       ->get();
       $count = DB::table('laravel_manage_user')
-      ->select('name','phone','email','department','isSuperAdmin')
+      ->select('id','name','phone','email','department','isSuperAdmin')
       ->where('name', 'like', $keyword.'%')
       ->orWhere('department', 'like', $keyword.'%')
       ->count();
-      // $count = DB::table('laravel_manage_user')->count();
       $response = [
         'data' => $user,
         'total' => $count
@@ -47,19 +46,68 @@ class UserController extends Controller
         return false;
     }
 
-
-
-    // $bool = DB::insert('insert into laravel_manage_user(name, phone, email, pwd, isSuperAdmin) values(?, ?, ?, ?, 0)',
-    // ['周', 10000, 'wanger@qq.com', '12345678']);
-    //  var_dump($bool);
-
-    // $update = DB::update('update laravel_manage_user set name = ?, phone = ?, email = ?, pwd = ?, isSuperAdmin = ? where id = ?',
-    // ['张三', 10086, 'zhangsan@qq.com', '12345678', 1, 1]);
-    // var_dump($update);
-
-    // $delete = DB::delete('delete from laravel_manage_user where id = ?',[4]);
-    // var_dump($delete);
-
+  }
+  public function updateUser (Request $request) {
+    $name = $request->input('name');
+    $phone = $request->input('phone');
+    $email = $request->input('email');
+    $department = $request->input('department');
+    $isSuperAdmin = $request->input('isSuperAdmin');
+    $action = $request->input('action');
+    if($action == 'add') {
+      $addUser = DB::table('laravel_manage_user')->insert(
+        ['name' => $name, 'phone' => $phone, 'email' => $email, 'department' => $department, 'isSuperAdmin' => $isSuperAdmin]
+      );
+      if($addUser) {
+        $response = [
+          'message' => '新增成功',
+          'status' => 200
+        ];
+        return Response::json($response);
+      } else {
+        $response = [
+          'message' => '新增失败',
+          'status' => 401
+        ];
+        return Response::json($response);
+      }
+    } else if($action == 'edit') {
+      $id = $request->input('id');
+      $updateUser = DB::update('update laravel_manage_user set name = ?, phone = ?, email = ?,department = ?,isSuperAdmin = ? where id = ?',
+      [$name, $phone, $email, $department, $isSuperAdmin, $id]);
+      if($updateUser) {
+        $response = [
+          'message' => '编辑成功',
+          'status' => 200
+        ];
+        return Response::json($response);
+      } else {
+        $response = [
+          'message' => '编辑失败',
+          'status' => 401
+        ];
+        return Response::json($response);
+      }
+      
+    }
+    
+  }
+  public function delUser (Request $request) {
+    $id = $request->input('id');
+    $delUser = DB::delete('delete from laravel_manage_user where id = ?',[$id]);
+    if($delUser) {
+      $response = [
+        'message' => '删除成功',
+        'status' => 200
+      ];
+      return Response::json($response);
+    } else {
+      $response = [
+        'message' => '删除失败',
+        'status' => 401
+      ];
+      return Response::json($response);
+    }
   }
   public function userLogin(Request $request)
   {
@@ -119,29 +167,44 @@ class UserController extends Controller
   }  
 
   public function test2 () {
-    $page = input::get('page');
-    $size = input::get('size');
-    $keyword = input::get('keyword');
-    $dataStart = ($page-1)*$size;
-    // $user = DB::select("select name,phone,email,department,isSuperAdmin from laravel_manage_user limit {$dataStart},{$size}");
-    $user = DB::table('laravel_manage_user')
-    ->select('name','phone','email','department','isSuperAdmin')
-    ->where('name', 'like', $keyword.'%')
-    ->orWhere('department', 'like', $keyword.'%')
-    ->offset($dataStart)
-    ->limit($size)
-    ->get();
-    $count = count($user);
-    // $count = DB::table('laravel_manage_user')->count();
-    $response = [
-      'data' => $user,
-      'total' => $count
-    ];
-    return Response::json($response);
+    $addDepartment = DB::table('laravel_manage_user')->insert(
+      // ['name' => $name, 'phone' => $address, 'email' => $email, 'department' => $department, 'isSuperAdmin' => $isSuperAdmin]
+      ['name' => '渠', 'phone' => '13333333333', 'email' => '123@qq.com', 'department' => '总经办', 'isSuperAdmin' => 0]
+    );
+    var_dump($addDepartment);
+    // $page = input::get('page');
+    // $size = input::get('size');
+    // $keyword = input::get('keyword');
+    // $dataStart = ($page-1)*$size;
+    // // $user = DB::select("select name,phone,email,department,isSuperAdmin from laravel_manage_user limit {$dataStart},{$size}");
+    // $user = DB::table('laravel_manage_user')
+    // ->select('name','phone','email','department','isSuperAdmin')
+    // ->where('name', 'like', $keyword.'%')
+    // ->orWhere('department', 'like', $keyword.'%')
+    // ->offset($dataStart)
+    // ->limit($size)
+    // ->get();
+    // $count = count($user);
+    // $response = [
+    //   'data' => $user,
+    //   'total' => $count
+    // ];
+    // return Response::json($response);
   }
 
   // 查询构造器数据库操作
   public function testDB() {
+    // $bool = DB::insert('insert into laravel_manage_user(name, phone, email, pwd, isSuperAdmin) values(?, ?, ?, ?, 0)',
+    // ['周', 10000, 'wanger@qq.com', '12345678']);
+    //  var_dump($bool);
+
+    // $update = DB::update('update laravel_manage_user set name = ?, phone = ?, email = ?, pwd = ?, isSuperAdmin = ? where id = ?',
+    // ['张三', 10086, 'zhangsan@qq.com', '12345678', 1, 1]);
+    // var_dump($update);
+
+    // $delete = DB::delete('delete from laravel_manage_user where id = ?',[4]);
+    // var_dump($delete);
+
     // 插入返回bool值
     // $bool = DB::table('laravel_manage_user')->insert(
     //   ['name' => 'testDB', 'phone' => '100' ,'email' => '123@qq.com', 'isSuperAdmin' => '1']
