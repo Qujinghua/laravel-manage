@@ -11,26 +11,26 @@
 |
 */
 
-Route::get('/', function () {
+Route::get('/config', function () {
     return view('welcome');
 });
 
-Route::get('/test', function () {
+Route::get('/config/test', function () {
     return 'test';
 });
 
-Route::any('/userLogin', 'UserController@userLogin');
-Route::any('/testDB', 'UserController@testDB');
-Route::get('/islogin', 'UserController@islogin');
+Route::any('/config/userLogin', 'UserController@userLogin');
+Route::any('/config/testDB', 'UserController@testDB');
+Route::get('/config/islogin', 'UserController@islogin');
 
 Route::group(['middleware' => ['checklogin','web']], function () {
-    Route::any('/getDepartment', 'DepartmentController@getDepartment');
-    Route::any('/updateDepartment', 'DepartmentController@updateDepartment');
-    Route::any('/delDepartment', 'DepartmentController@delDepartment');
-    Route::any('/getUser', 'UserController@getUser');
-    Route::any('/updateUser', 'UserController@updateUser');
-    Route::any('/delUser', 'UserController@delUser');
-    Route::any('/test2', 'UserController@test2');
+    Route::any('/config/getDepartment', 'DepartmentController@getDepartment');
+    Route::any('/config/updateDepartment', 'DepartmentController@updateDepartment');
+    Route::any('/config/delDepartment', 'DepartmentController@delDepartment');
+    Route::any('/config/getUser', 'UserController@getUser');
+    Route::any('/config/updateUser', 'UserController@updateUser');
+    Route::any('/config/delUser', 'UserController@delUser');
+    Route::any('/config/test2', 'UserController@test2');
 });
 
 // Route::any('userLogin', ['uses' => 'UserController@userLogin']);
