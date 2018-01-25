@@ -11,7 +11,7 @@
 |
 */
 
-Route::get('/config', function () {
+Route::get('/', function () {
     return view('welcome');
 });
 
