@@ -30,6 +30,9 @@ Route::group(['middleware' => ['checklogin','web']], function () {
     Route::any('/config/getUser', 'UserController@getUser');
     Route::any('/config/updateUser', 'UserController@updateUser');
     Route::any('/config/delUser', 'UserController@delUser');
+    Route::any('/config/getCustomer', 'CustomerController@getCustomer');
+    Route::any('/config/updateCustomer', 'CustomerController@updateCustomer');
+    Route::any('/config/delCustomer', 'CustomerController@delCustomer');
     Route::any('/config/test2', 'UserController@test2');
 });
 
