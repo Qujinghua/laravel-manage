@@ -105,6 +105,27 @@ class UserController extends Controller
     ];
     return Response::json($response);
   }
+  public function updatePersonalInfo (Request $request) {
+    $id = $request->input('id');
+    $phone = $request->input('phone');
+    $email = $request->input('email');
+    $pwd = $request->input('newPwd');
+    $updatePersonalInfo = DB::update('update laravel_manage_user set phone = ?, email = ?, pwd = ? where id = ?',
+    [$phone, $email, $pwd, $id]);
+    if($updatePersonalInfo) {
+      $response = [
+        'message' => '保存成功,请重新登录。',
+        'status' => 200
+      ];
+      return Response::json($response);
+    } else {
+      $response = [
+        'message' => '保存失败',
+        'status' => 401
+      ];
+      return Response::json($response);
+    }
+  }
   public function delUser (Request $request) {
     $id = $request->input('id');
     $delUser = DB::delete('delete from laravel_manage_user where id = ?',[$id]);
