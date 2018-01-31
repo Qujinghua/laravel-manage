@@ -92,6 +92,19 @@ class UserController extends Controller
     }
     
   }
+  public function personalInfo (Request $request) {
+    $username = $request->input('username');
+    $personalInfo = DB::table('laravel_manage_user')
+    ->select('id','name','phone','email')
+    ->where('name', $username)
+    ->get();
+    $response = [
+      'data' => $personalInfo,
+      'message' => '获取成功',
+      'status' => 200
+    ];
+    return Response::json($response);
+  }
   public function delUser (Request $request) {
     $id = $request->input('id');
     $delUser = DB::delete('delete from laravel_manage_user where id = ?',[$id]);

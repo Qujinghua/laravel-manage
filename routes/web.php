@@ -24,15 +24,16 @@ Route::any('/config/testDB', 'UserController@testDB');
 Route::get('/config/islogin', 'UserController@islogin');
 
 Route::group(['middleware' => ['checklogin','web']], function () {
-    Route::any('/config/getDepartment', 'DepartmentController@getDepartment');
-    Route::any('/config/updateDepartment', 'DepartmentController@updateDepartment');
-    Route::any('/config/delDepartment', 'DepartmentController@delDepartment');
-    Route::any('/config/getUser', 'UserController@getUser');
-    Route::any('/config/updateUser', 'UserController@updateUser');
-    Route::any('/config/delUser', 'UserController@delUser');
-    Route::any('/config/getCustomer', 'CustomerController@getCustomer');
-    Route::any('/config/updateCustomer', 'CustomerController@updateCustomer');
-    Route::any('/config/delCustomer', 'CustomerController@delCustomer');
+    Route::any('/config/getDepartment', 'DepartmentController@getDepartment'); //获取部门
+    Route::any('/config/updateDepartment', 'DepartmentController@updateDepartment'); //新增或修改部门
+    Route::any('/config/delDepartment', 'DepartmentController@delDepartment'); // 删除部门
+    Route::any('/config/getUser', 'UserController@getUser');  // 获取用户
+    Route::any('/config/updateUser', 'UserController@updateUser'); //新增或修改用户
+    Route::any('/config/delUser', 'UserController@delUser'); //删除用户
+    Route::any('/config/getCustomer', 'CustomerController@getCustomer'); //获取客户
+    Route::any('/config/updateCustomer', 'CustomerController@updateCustomer'); //新增或修改客户
+    Route::any('/config/delCustomer', 'CustomerController@delCustomer'); //删除客户
+    Route::any('/config/personalInfo', 'UserController@personalInfo');  // 用户自定义编辑个人信息（获取）
     Route::any('/config/test2', 'UserController@test2');
 });
 
