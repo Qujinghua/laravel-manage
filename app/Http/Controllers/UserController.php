@@ -113,6 +113,7 @@ class UserController extends Controller
       $email = $request->input('email');
       $updatePersonalInfo = DB::update('update laravel_manage_user set phone = ?, email = ? where id = ?',
       [$phone, $email, $id]);
+      // return $updatePersonalInfo;
       if($updatePersonalInfo) {
         $response = [
           'message' => '保存成功！',
@@ -121,8 +122,8 @@ class UserController extends Controller
         return Response::json($response);
       } else {
         $response = [
-          'message' => '保存失败',
-          'status' => 401
+          'message' => '您并未做出任何修改。',
+          'status' => 403
         ];
         return Response::json($response);
       }
@@ -132,14 +133,14 @@ class UserController extends Controller
       [$pwd, $id]);
       if($updatePersonalInfoPass) {
         $response = [
-          'message' => '保存成功,请重新登录。',
+          'message' => '修改成功,请重新登录。',
           'status' => 200
         ];
         return Response::json($response);
       } else {
         $response = [
-          'message' => '保存失败',
-          'status' => 401
+          'message' => '您设置的新密码与旧密码是一致的。',
+          'status' => 403
         ];
         return Response::json($response);
       }
