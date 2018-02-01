@@ -107,24 +107,44 @@ class UserController extends Controller
   }
   public function updatePersonalInfo (Request $request) {
     $id = $request->input('id');
-    $phone = $request->input('phone');
-    $email = $request->input('email');
-    $pwd = $request->input('newPwd');
-    $updatePersonalInfo = DB::update('update laravel_manage_user set phone = ?, email = ?, pwd = ? where id = ?',
-    [$phone, $email, $pwd, $id]);
-    if($updatePersonalInfo) {
-      $response = [
-        'message' => '保存成功,请重新登录。',
-        'status' => 200
-      ];
-      return Response::json($response);
+    $action = $request->input('action');
+    if($action == 'personalInfo') {
+      $phone = $request->input('phone');
+      $email = $request->input('email');
+      $updatePersonalInfo = DB::update('update laravel_manage_user set phone = ?, email = ? where id = ?',
+      [$phone, $email, $id]);
+      if($updatePersonalInfo) {
+        $response = [
+          'message' => '保存成功！',
+          'status' => 200
+        ];
+        return Response::json($response);
+      } else {
+        $response = [
+          'message' => '保存失败',
+          'status' => 401
+        ];
+        return Response::json($response);
+      }
     } else {
-      $response = [
-        'message' => '保存失败',
-        'status' => 401
-      ];
-      return Response::json($response);
+      $pwd = $request->input('newPwd');
+      $updatePersonalInfoPass = DB::update('update laravel_manage_user set pwd = ? where id = ?',
+      [$pwd, $id]);
+      if($updatePersonalInfoPass) {
+        $response = [
+          'message' => '保存成功,请重新登录。',
+          'status' => 200
+        ];
+        return Response::json($response);
+      } else {
+        $response = [
+          'message' => '保存失败',
+          'status' => 401
+        ];
+        return Response::json($response);
+      }
     }
+    
   }
   public function delUser (Request $request) {
     $id = $request->input('id');
