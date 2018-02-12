@@ -35,6 +35,8 @@ Route::group(['middleware' => ['checklogin','web']], function () {
     Route::any('/config/delCustomer', 'CustomerController@delCustomer'); //删除客户
     Route::any('/config/personalInfo', 'UserController@personalInfo');  // 用户自定义编辑个人信息（获取）
     Route::any('/config/updatePersonalInfo', 'UserController@updatePersonalInfo');  // 用户自定义编辑个人信息（修改）
+    Route::any('/config/getBigC', 'ExhibitionMenuController@getBigC');  // 获取大类
+    Route::any('/config/updateMenu', 'ExhibitionMenuController@updateMenu');  // 编辑（大类、小类等）信息
     Route::any('/config/test2', 'UserController@test2');
 });
 
