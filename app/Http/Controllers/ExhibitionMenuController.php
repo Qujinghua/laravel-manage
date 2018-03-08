@@ -39,11 +39,11 @@ class ExhibitionMenuController extends Controller {
         ];
         return Response::json($response);
       }
-    } else if($action == 'edit') {
-      $id = $request->input('id');
-      $updateDepartment = DB::update('update laravel_manage_department set name = ?, address = ? where id = ?',
-      [$name, $address, $id]);
-      if($updateDepartment) {
+    } else if($action == 'editBig') {
+      $big_id = $request->input('big_id');
+      $updateBigC = DB::update('update laravel_manage_big_classify set big_name = ?, big_notes = ? where big_id = ?',
+      [$big_name, $big_notes, $big_id]);
+      if($updateBigC) {
         $response = [
           'message' => '编辑成功',
           'status' => 200
