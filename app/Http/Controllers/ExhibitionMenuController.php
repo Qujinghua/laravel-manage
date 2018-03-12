@@ -18,6 +18,15 @@ class ExhibitionMenuController extends Controller {
         return false;
     }
   }
+  public function getSmallC () {
+    try {
+      $small = DB::select('select * from laravel_manage_small_classify');
+      return Response::json($small);
+    } catch (Exception $e) {
+        report($e);
+        return false;
+    }
+  }
   public function updateMenu (Request $request) {
     $action = $request->input('action');
     $big_name = $request->input('big_name');
