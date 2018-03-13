@@ -29,9 +29,10 @@ class ExhibitionMenuController extends Controller {
   }
   public function updateMenu (Request $request) {
     $action = $request->input('action');
-    $big_name = $request->input('big_name');
-    $big_notes = $request->input('big_notes');
+    
     if($action == 'addBig') {
+      $big_name = $request->input('big_name');
+      $big_notes = $request->input('big_notes');
       $addBigC = DB::table('laravel_manage_big_classify')->insert(
         ['big_name' => $big_name, 'big_notes' => $big_notes]
       );
@@ -49,10 +50,52 @@ class ExhibitionMenuController extends Controller {
         return Response::json($response);
       }
     } else if($action == 'editBig') {
+      $big_name = $request->input('big_name');
+      $big_notes = $request->input('big_notes');
       $big_id = $request->input('big_id');
       $updateBigC = DB::update('update laravel_manage_big_classify set big_name = ?, big_notes = ? where big_id = ?',
       [$big_name, $big_notes, $big_id]);
       if($updateBigC) {
+        $response = [
+          'message' => '编辑成功',
+          'status' => 200
+        ];
+        return Response::json($response);
+      } else {
+        $response = [
+          'message' => '编辑失败',
+          'status' => 401
+        ];
+        return Response::json($response);
+      }
+      
+    } else if($action == 'addSmall') {
+      $small_name = $request->input('small_name');
+      $big_name = $request->input('big_name');
+      $small_notes = $request->input('small_notes');
+      $addSmallC = DB::table('laravel_manage_small_classify')->insert(
+        ['small_name' => $small_name, 'big_name' => $big_name, 'small_notes' => $small_notes]
+      );
+      if($addSmallC) {
+        $response = [
+          'message' => '新增成功',
+          'status' => 200
+        ];
+        return Response::json($response);
+      } else {
+        $response = [
+          'message' => '新增失败',
+          'status' => 401
+        ];
+        return Response::json($response);
+      }
+    } else if($action == 'editSmall') {
+      $small_name = $request->input('small_name');
+      $small_notes = $request->input('small_notes');
+      $small_id = $request->input('small_id');
+      $updateSmallC = DB::update('update laravel_manage_small_classify set small_name = ?, small_notes = ? where small_id = ?',
+      [$small_name, $small_notes, $small_id]);
+      if($updateSmallC) {
         $response = [
           'message' => '编辑成功',
           'status' => 200
@@ -87,9 +130,23 @@ class ExhibitionMenuController extends Controller {
         ];
         return Response::json($response);
       }
+    } else if($action == 'delSmall') {
+      $small_id = $request->input('small_id');
+      $delSmall = DB::delete('delete from laravel_manage_small_classify where small_id = ?',[$small_id]);
+      if($delSmall) {
+        $response = [
+          'message' => '删除成功！',
+          'status' => 200
+        ];
+        return Response::json($response);
+      } else {
+        $response = [
+          'message' => '删除失败！',
+          'status' => 401
+        ];
+        return Response::json($response);
+      }
     }
-    
-    
   }
 
 
