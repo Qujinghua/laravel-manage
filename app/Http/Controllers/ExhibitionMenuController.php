@@ -18,6 +18,15 @@ class ExhibitionMenuController extends Controller {
         return false;
     }
   }
+  public function getBrandC () {
+    try {
+      $brand = DB::select('select * from laravel_manage_brand_classify');
+      return Response::json($brand);
+    } catch (Exception $e) {
+        report($e);
+        return false;
+    }
+  }
   public function getSmallC () {
     try {
       $small = DB::select('select * from laravel_manage_small_classify');
