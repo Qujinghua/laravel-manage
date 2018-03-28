@@ -80,10 +80,10 @@ class ExhibitionMenuController extends Controller {
       
     } else if($action == 'addSmall') {
       $small_name = $request->input('small_name');
-      $big_name = $request->input('big_name');
+      $big_id = $request->input('big_id');
       $small_notes = $request->input('small_notes');
       $addSmallC = DB::table('laravel_manage_small_classify')->insert(
-        ['small_name' => $small_name, 'big_name' => $big_name, 'small_notes' => $small_notes]
+        ['small_name' => $small_name, 'big_id' => $big_id, 'small_notes' => $small_notes]
       );
       if($addSmallC) {
         $response = [
@@ -100,10 +100,11 @@ class ExhibitionMenuController extends Controller {
       }
     } else if($action == 'editSmall') {
       $small_name = $request->input('small_name');
+      $big_id = $request->input('big_id');
       $small_notes = $request->input('small_notes');
       $small_id = $request->input('small_id');
-      $updateSmallC = DB::update('update laravel_manage_small_classify set small_name = ?, small_notes = ? where small_id = ?',
-      [$small_name, $small_notes, $small_id]);
+      $updateSmallC = DB::update('update laravel_manage_small_classify set small_name = ?, big_id = ?, small_notes = ? where small_id = ?',
+      [$small_name, $big_id, $small_notes, $small_id]);
       if($updateSmallC) {
         $response = [
           'message' => '编辑成功',
