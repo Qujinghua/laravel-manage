@@ -35,7 +35,7 @@ class DepartmentController extends Controller {
       } else {
         $response = [
           'message' => '新增失败',
-          'status' => 401
+          'status' => 403
         ];
         return Response::json($response);
       }
@@ -52,7 +52,7 @@ class DepartmentController extends Controller {
       } else {
         $response = [
           'message' => '编辑失败',
-          'status' => 401
+          'status' => 403
         ];
         return Response::json($response);
       }
@@ -72,7 +72,7 @@ class DepartmentController extends Controller {
     } else {
       $response = [
         'message' => '删除失败',
-        'status' => 401
+        'status' => 403
       ];
       return Response::json($response);
     }

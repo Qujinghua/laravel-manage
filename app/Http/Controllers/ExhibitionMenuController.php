@@ -54,7 +54,7 @@ class ExhibitionMenuController extends Controller {
       } else {
         $response = [
           'message' => '新增失败',
-          'status' => 401
+          'status' => 403
         ];
         return Response::json($response);
       }
@@ -73,7 +73,7 @@ class ExhibitionMenuController extends Controller {
       } else {
         $response = [
           'message' => '编辑失败',
-          'status' => 401
+          'status' => 403
         ];
         return Response::json($response);
       }
@@ -94,7 +94,7 @@ class ExhibitionMenuController extends Controller {
       } else {
         $response = [
           'message' => '新增失败',
-          'status' => 401
+          'status' => 403
         ];
         return Response::json($response);
       }
@@ -114,11 +114,32 @@ class ExhibitionMenuController extends Controller {
       } else {
         $response = [
           'message' => '编辑失败',
-          'status' => 401
+          'status' => 403
         ];
         return Response::json($response);
       }
       
+    } else if($action == 'addBrand') {
+      $brand_name = $request->input('brand_name');
+      $big_id = $request->input('big_id');
+      $small_id = $request->input('small_id');
+      $brand_notes = $request->input('brand_notes');
+      $addBrandC = DB::table('laravel_manage_brand_classify')->insert(
+        ['brand_name' => $small_name, 'big_id' => $big_id, 'small_id' => $small_id, 'brand_notes' => $small_notes]
+      );
+      if($addBrandC) {
+        $response = [
+          'message' => '新增成功',
+          'status' => 200
+        ];
+        return Response::json($response);
+      } else {
+        $response = [
+          'message' => '新增失败',
+          'status' => 403
+        ];
+        return Response::json($response);
+      }
     }
     
   }
@@ -136,7 +157,7 @@ class ExhibitionMenuController extends Controller {
       } else {
         $response = [
           'message' => '删除失败！',
-          'status' => 401
+          'status' => 403
         ];
         return Response::json($response);
       }
@@ -152,7 +173,7 @@ class ExhibitionMenuController extends Controller {
       } else {
         $response = [
           'message' => '删除失败！',
-          'status' => 401
+          'status' => 403
         ];
         return Response::json($response);
       }
