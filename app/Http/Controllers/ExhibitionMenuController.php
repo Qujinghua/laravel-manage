@@ -125,7 +125,7 @@ class ExhibitionMenuController extends Controller {
       $small_id = $request->input('smallIdArr');
       $brand_notes = $request->input('brand_notes');
       $addBrandC = DB::table('laravel_manage_brand_classify')->insert(
-        ['brand_name' => $small_name, 'big_id' => $big_id, 'small_id' => $small_id, 'brand_notes' => $small_notes]
+        ['brand_name' => $brand_name, 'big_id' => $big_id, 'small_id' => $small_id, 'brand_notes' => $brand_notes]
       );
       if($addBrandC) {
         $response = [
