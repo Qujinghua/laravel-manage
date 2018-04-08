@@ -140,6 +140,27 @@ class ExhibitionMenuController extends Controller {
         ];
         return Response::json($response);
       }
+    } else if($action == 'editBrand') {
+      $brand_id = $request->input('brand_id');
+      $brand_name = $request->input('brand_name');
+      $big_id = $request->input('bigIdArr');
+      $small_id = $request->input('smallIdArr');
+      $brand_notes = $request->input('brand_notes');
+      $updateBrandC = DB::update('update laravel_manage_brand_classify set brand_name = ?, big_id = ?, small_id = ?, brand_notes = ? where brand_id = ?',
+      [$brand_name, $big_id, $small_id, $brand_notes, $brand_id]);
+      if($updateBrandC) {
+        $response = [
+          'message' => '编辑成功',
+          'status' => 200
+        ];
+        return Response::json($response);
+      } else {
+        $response = [
+          'message' => '编辑失败',
+          'status' => 403
+        ];
+        return Response::json($response);
+      }
     }
     
   }
