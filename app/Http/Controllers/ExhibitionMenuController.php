@@ -198,6 +198,22 @@ class ExhibitionMenuController extends Controller {
         ];
         return Response::json($response);
       }
+    } else if($action == 'delBrand') {
+      $brand_id = $request->input('brand_id');
+      $delBrand = DB::delete('delete from laravel_manage_brand_classify where brand_id = ?',[$brand_id]);
+      if($delBrand) {
+        $response = [
+          'message' => '删除成功！',
+          'status' => 200
+        ];
+        return Response::json($response);
+      } else {
+        $response = [
+          'message' => '删除失败！',
+          'status' => 403
+        ];
+        return Response::json($response);
+      }
     }
   }
 
