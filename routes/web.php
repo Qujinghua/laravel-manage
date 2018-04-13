@@ -40,6 +40,9 @@ Route::group(['middleware' => ['checklogin','web']], function () {
     Route::any('/config/getBrandC', 'ExhibitionMenuController@getBrandC');  // 获取品牌
     Route::any('/config/updateMenu', 'ExhibitionMenuController@updateMenu');  // 编辑（大类、小类等）信息
     Route::any('/config/delMenu', 'ExhibitionMenuController@delMenu');  // 删除（大类、小类等）信息
+    Route::any('/config/delMenu', 'ExhibitionMenuController@delMenu');  // 删除（大类、小类等）信息
+    Route::any('/config/upload', 'GoodsController@upload');  // 删除（大类、小类等）信息
+    Route::any('/config/deleteFile', 'GoodsController@deleteFile');  // 删除（大类、小类等）信息
     Route::any('/config/test2', 'UserController@test2');
 });
 
