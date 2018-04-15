@@ -41,8 +41,9 @@ Route::group(['middleware' => ['checklogin','web']], function () {
     Route::any('/config/updateMenu', 'ExhibitionMenuController@updateMenu');  // 编辑（大类、小类等）信息
     Route::any('/config/delMenu', 'ExhibitionMenuController@delMenu');  // 删除（大类、小类等）信息
     Route::any('/config/delMenu', 'ExhibitionMenuController@delMenu');  // 删除（大类、小类等）信息
-    Route::any('/config/upload', 'GoodsController@upload');  // 删除（大类、小类等）信息
-    Route::any('/config/deleteFile', 'GoodsController@deleteFile');  // 删除（大类、小类等）信息
+    Route::any('/config/upload', 'GoodsController@upload');  // 图片上传
+    Route::any('/config/deleteFile', 'GoodsController@deleteFile');  // 删除图片
+    Route::any('/config/getGoods', 'GoodsController@getGoods');  // 获取商品
     Route::any('/config/test2', 'UserController@test2');
 });
 
