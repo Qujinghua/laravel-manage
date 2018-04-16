@@ -44,6 +44,8 @@ Route::group(['middleware' => ['checklogin','web']], function () {
     Route::any('/config/upload', 'GoodsController@upload');  // 图片上传
     Route::any('/config/deleteFile', 'GoodsController@deleteFile');  // 删除图片
     Route::any('/config/getGoods', 'GoodsController@getGoods');  // 获取商品
+    Route::any('/config/updateGoods', 'GoodsController@updateGoods');  // 新增商品
+    Route::any('/config/delGoods', 'GoodsController@delGoods');  // 新增商品
     Route::any('/config/test2', 'UserController@test2');
 });
 

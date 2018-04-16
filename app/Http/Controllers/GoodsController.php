@@ -42,6 +42,91 @@ class GoodsController extends Controller
     }
 
   }
+  public function updateGoods (Request $request) {
+    $action = $request->input('action'); 
+    $name = $request->input('name');
+    $price = $request->input('price');//价格
+    $spec = $request->input('spec');
+    $color = $request->input('color');
+    $configure = $request->input('configure');
+    $material = $request->input('material');
+    $stock = $request->input('stock');
+    $photoName = $request->input('photoName');
+    $photoPath = $request->input('photoPath');
+    $photoUrl = $request->input('photoUrl');
+    $introduce = $request->input('introduce');
+    $big_id = $request->input('big_id');
+    $small_id = $request->input('small_id');
+    $brand_id = $request->input('brand_id');
+    if($action == 'add') {
+      $addGoods = DB::table('laravel_manage_goods')->insert(
+        ['name' => $name,           'price' => $price,         'spec' => $spec,
+         'color' => $color,         'configure' => $configure, 'material' => $material,   'stock' => $stock,
+         'photoName' => $photoName, 'photoPath' => $photoPath, 'photoUrl' => $photoUrl,
+         'introduce' => $introduce, 'big_id' => $big_id,       'small_id' => $small_id,
+         'brand_id' => $brand_id]
+      );
+      if($addGoods) {
+        $response = [
+          'message' => '新增成功',
+          'status' => 200
+        ];
+        return Response::json($response);
+      } else {
+        $response = [
+          'message' => '新增失败',
+          'status' => 403
+        ];
+        return Response::json($response);
+      }
+    } else if($action == 'edit') {
+      $id = $request->input('id');
+      $updateGoods = DB::update('update laravel_manage_goods set 
+      name = ?,     price = ?,     spec = ?,
+      color = ?,    configure = ?, material = ?,
+      stock = ?,    photoName = ?, photoPath = ?,
+      photoUrl = ?, introduce = ?, big_id = ?,
+      small_id = ?, brand_id = ?
+      where id = ?',
+      [$name,    $price,     $spec,
+      $color,    $configure, $material,
+      $stock,    $photoName, $photoPath,
+      $photoUrl, $introduce, $big_id,
+      $small_id, $brand_id, $id]);
+      if($updateGoods) {
+        $response = [
+          'message' => '编辑成功',
+          'status' => 200
+        ];
+        return Response::json($response);
+      } else {
+        $response = [
+          'message' => '编辑失败',
+          'status' => 403
+        ];
+        return Response::json($response);
+      }
+      
+    }
+    
+  }
+  public function delGoods (Request $request) {
+    $id = $request->input('id');
+    $delGoods = DB::delete('delete from laravel_manage_goods where id = ?',[$id]);
+    if($delGoods) {
+      $response = [
+        'message' => '删除成功',
+        'status' => 200
+      ];
+      return Response::json($response);
+    } else {
+      $response = [
+        'message' => '删除失败',
+        'status' => 403
+      ];
+      return Response::json($response);
+    }
+  }
   // 文件上传方法
   public function upload(Request $request)
   {
