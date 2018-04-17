@@ -42,6 +42,93 @@ class GoodsController extends Controller
     }
 
   }
+  public function getGoodsExhibition()
+  {
+    try {
+      $page = input::get('page');
+      $size = input::get('size');
+      $big_id = input::get('big_id');
+      $small_id = input::get('small_id');
+      $brand_id = input::get('brand_id');
+      $dataStart = ($page-1)*$size;
+      // $user = DB::select("select name,phone,email,department,isSuperAdmin from laravel_manage_user limit {$dataStart},{$size}");
+      if($big_id == 0 && $small_id == 0 && $brand_id == 0) {
+        $user = DB::table('laravel_manage_goods')
+        ->offset($dataStart)
+        ->limit($size)
+        ->get();
+        $count = DB::table('laravel_manage_goods')
+        ->count();
+      } else if($big_id != 0 && $small_id == 0 && $brand_id == 0) {
+        $user = DB::table('laravel_manage_goods')
+        ->where('big_id',$big_id)
+        ->offset($dataStart)
+        ->limit($size)
+        ->get();
+        $count = DB::table('laravel_manage_goods')
+        ->where('big_id',$big_id)
+        ->count();
+      } else if($big_id == 0 && $small_id != 0 && $brand_id == 0) {
+        $user = DB::table('laravel_manage_goods')
+        ->where('small_id', $small_id)
+        ->offset($dataStart)
+        ->limit($size)
+        ->get();
+        $count = DB::table('laravel_manage_goods')
+        ->where('small_id', $small_id)
+        ->count();
+      } else if($big_id == 0 && $small_id == 0 && $brand_id != 0) {
+        $user = DB::table('laravel_manage_goods')
+        ->where('brand_id', $brand_id)
+        ->offset($dataStart)
+        ->limit($size)
+        ->get();
+        $count = DB::table('laravel_manage_goods')
+        ->where('brand_id', $brand_id)
+        ->count();
+      } else if($big_id != 0 && $small_id != 0 && $brand_id == 0) {
+        $user = DB::table('laravel_manage_goods')
+        ->whereRaw('big_id = ? and small_id = ?', [$big_id, $small_id])
+        // ->where('big_id', 'like', $big_id)
+        ->offset($dataStart)
+        ->limit($size)
+        ->get();
+        $count = DB::table('laravel_manage_goods')
+        ->whereRaw('big_id = ? and small_id = ?', [$big_id, $small_id])
+        ->count();
+      } else if($big_id != 0 && $small_id == 0 && $brand_id != 0) {
+        $user = DB::table('laravel_manage_goods')
+        ->whereRaw('big_id = ? and brand_id = ?', [$big_id, $brand_id])
+        // ->where('big_id', 'like', $big_id)
+        ->offset($dataStart)
+        ->limit($size)
+        ->get();
+        $count = DB::table('laravel_manage_goods')
+        ->whereRaw('big_id = ? and brand_id = ?', [$big_id, $brand_id])
+        ->count();
+      } else if($big_id != 0 && $small_id != 0 && $brand_id != 0) {
+        $user = DB::table('laravel_manage_goods')
+        ->whereRaw('big_id = ? and small_id = ? and brand_id = ?', [$big_id, $small_id, $brand_id])
+        // ->where('big_id', 'like', $big_id)
+        ->offset($dataStart)
+        ->limit($size)
+        ->get();
+        $count = DB::table('laravel_manage_goods')
+        ->whereRaw('big_id = ? and small_id = ? and brand_id = ?', [$big_id, $small_id, $brand_id])
+        ->count();
+      }
+      
+      $response = [
+        'data' => $user,
+        'total' => $count
+      ];
+      return Response::json($response);
+    } catch (Exception $e) {
+        report($e);
+        return false;
+    }
+
+  }
   public function updateGoods (Request $request) {
     $action = $request->input('action'); 
     $name = $request->input('name');

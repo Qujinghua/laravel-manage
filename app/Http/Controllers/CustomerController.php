@@ -46,38 +46,52 @@ class CustomerController extends Controller
 
   }
   public function updateCustomer (Request $request) {
-    $inputDate = $request->input('inputDate');
-    $user_name = $request->input('user_name');
-    $customer_resources = $request->input('customer_resources');
-    $customer_name = $request->input('customer_name');
-    $customer_companynature = $request->input('customer_companynature');
-    $customer_contacts = $request->input('customer_contacts');
-    
-    $customer_placenature = $request->input('customer_placenature');
-    $customer_phone = $request->input('customer_phone');
-    $customer_area = $request->input('customer_area');
-    $customer_website = $request->input('customer_website');
-    $customer_email = $request->input('customer_email');
-
-    $moveDate = $request->input('moveDate');
-    $company_tax_num = $request->input('company_tax_num');
-    $company_open_bank = $request->input('company_open_bank');
-    $company_open_account = $request->input('company_open_account');
-    $company_address = $request->input('company_address');
-
-    $receive_people = $request->input('receive_people');
-    $project_leader = $request->input('project_leader');
-    $project_leader_phone = $request->input('project_leader_phone');
-    $project_leader_email = $request->input('project_leader_email');
-    $design_company_name = $request->input('design_company_name');
-
-    $design_people = $request->input('design_people');
-    $design_people_phone = $request->input('design_people_phone');
-    $design_people_email = $request->input('design_people_email');
-    $project_address = $request->input('project_address');
-    $demand_survey = $request->input('demand_survey');
-
     $action = $request->input('action');
+    if($action=='add' || $action == 'edit') {
+      $inputDate = $request->input('inputDate');
+      $user_name = $request->input('user_name');
+      $customer_resources = $request->input('customer_resources');
+      $customer_name = $request->input('customer_name');
+      $customer_companynature = $request->input('customer_companynature');
+      $customer_contacts = $request->input('customer_contacts');
+      
+      $customer_placenature = $request->input('customer_placenature');
+      $customer_phone = $request->input('customer_phone');
+      $customer_area = $request->input('customer_area');
+      $customer_website = $request->input('customer_website');
+      $customer_email = $request->input('customer_email');
+
+      $moveDate = $request->input('moveDate');
+      $company_tax_num = $request->input('company_tax_num');
+      $company_open_bank = $request->input('company_open_bank');
+      $company_open_account = $request->input('company_open_account');
+      $company_address = $request->input('company_address');
+
+      $receive_people = $request->input('receive_people');
+      $project_leader = $request->input('project_leader');
+      $project_leader_phone = $request->input('project_leader_phone');
+      $project_leader_email = $request->input('project_leader_email');
+      $design_company_name = $request->input('design_company_name');
+
+      $design_people = $request->input('design_people');
+      $design_people_phone = $request->input('design_people_phone');
+      $design_people_email = $request->input('design_people_email');
+      $project_address = $request->input('project_address');
+      $demand_survey = $request->input('demand_survey');
+    } else {
+      $bill_order_num = $request->input('bill_order_num');
+      $bill_sale_date = $request->input('bill_sale_date');
+      $bill_sale_money = $request->input('bill_sale_money');
+      $bill_sale_discount = $request->input('bill_sale_discount');
+      $bill_sale_first_money = $request->input('bill_sale_first_money');
+      $bill_sale_first_money_method = $request->input('bill_sale_first_money_method');
+    
+      $bill_info_fee = $request->input('bill_info_fee');
+      $bill_info_fee_method = $request->input('bill_info_fee_method');
+      $bill_deliery_date = $request->input('bill_deliery_date');
+      $bill_payment_method = $request->input('bill_payment_method');
+      $company_open_bank = $request->input('company_open_bank');
+    }
     if($action == 'add') {
       $addCustomer = DB::table('laravel_manage_customer')->insert(
         ['inputDate' => $inputDate, 'user_name' => $user_name, 'customer_resources' => $customer_resources, 
@@ -154,6 +168,34 @@ class CustomerController extends Controller
         return Response::json($response);
       }
       
+    } else if ($action == 'bill') {
+      $customer_id = $request->input('customer_id');
+      $updateCustomerBill = DB::update('update laravel_manage_customer set 
+      bill_order_num = ?,        bill_sale_date = ?,      
+      bill_sale_money = ?,       bill_sale_discount = ?, 
+      bill_sale_first_money = ?, bill_sale_first_money_method = ?, 
+      bill_info_fee = ?,         bill_info_fee_method = ?, 
+      bill_deliery_date = ?,     bill_payment_method = ?, 
+      company_open_bank = ? where customer_id = ?',
+      [$bill_order_num,       $bill_sale_date, 
+      $bill_sale_money,       $bill_sale_discount, 
+      $bill_sale_first_money, $bill_sale_first_money_method, 
+      $bill_info_fee,         $bill_info_fee_method, 
+      $bill_deliery_date,     $bill_payment_method, 
+      $company_open_bank,     $customer_id]);
+      if($updateCustomerBill) {
+        $response = [
+          'message' => '添加成功',
+          'status' => 200
+        ];
+        return Response::json($response);
+      } else {
+        $response = [
+          'message' => '添加失败',
+          'status' => 403
+        ];
+        return Response::json($response);
+      }
     }
     
   }
