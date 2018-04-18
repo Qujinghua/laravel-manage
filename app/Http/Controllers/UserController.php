@@ -26,15 +26,15 @@ class UserController extends Controller
       // $user = DB::select("select name,phone,email,department,isSuperAdmin from laravel_manage_user limit {$dataStart},{$size}");
       $user = DB::table('laravel_manage_user')
       ->select('id','name','phone','email','department','isSuperAdmin')
-      ->where('name', 'like', $keyword.'%')
-      ->orWhere('department', 'like', $keyword.'%')
+      ->where('name', 'like', '%'.$keyword.'%')
+      ->orWhere('department', 'like', '%'.$keyword.'%')
       ->offset($dataStart)
       ->limit($size)
       ->get();
       $count = DB::table('laravel_manage_user')
       ->select('id','name','phone','email','department','isSuperAdmin')
-      ->where('name', 'like', $keyword.'%')
-      ->orWhere('department', 'like', $keyword.'%')
+      ->where('name', 'like', '%'.$keyword.'%')
+      ->orWhere('department', 'like', '%'.$keyword.'%')
       ->count();
       $response = [
         'data' => $user,

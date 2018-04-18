@@ -24,15 +24,19 @@ class CustomerController extends Controller
       // $user = DB::select("select name,phone,email,department,isSuperAdmin from laravel_manage_customer limit {$dataStart},{$size}");
       $customer = DB::table('laravel_manage_customer')
       ->select('*')
-      ->where('customer_name', 'like', $keyword.'%')
-      ->orWhere('customer_contacts', 'like', $keyword.'%')
+      ->where('customer_name', 'like', '%'.$keyword.'%')
+      ->orWhere('customer_contacts', 'like', '%'.$keyword.'%')
+      ->orWhere('user_name', 'like', '%'.$keyword.'%')
+      ->orWhere('bill_order_num', 'like', '%'.$keyword.'%')
       ->offset($dataStart)
       ->limit($size)
       ->get();
       $count = DB::table('laravel_manage_customer')
       ->select('*')
-      ->where('customer_name', 'like', $keyword.'%')
-      ->orWhere('customer_name', 'like', $keyword.'%')
+      ->where('customer_name', 'like', '%'.$keyword.'%')
+      ->orWhere('customer_contacts', 'like', '%'.$keyword.'%')
+      ->orWhere('user_name', 'like', '%'.$keyword.'%')
+      ->orWhere('bill_order_num', 'like', '%'.$keyword.'%')
       ->count();
       $response = [
         'data' => $customer,
@@ -78,7 +82,7 @@ class CustomerController extends Controller
       $design_people_email = $request->input('design_people_email');
       $project_address = $request->input('project_address');
       $demand_survey = $request->input('demand_survey');
-    } else {
+    } else if($action=='bill') {
       $bill_order_num = $request->input('bill_order_num');
       $bill_sale_date = $request->input('bill_sale_date');
       $bill_sale_money = $request->input('bill_sale_money');
@@ -91,6 +95,12 @@ class CustomerController extends Controller
       $bill_deliery_date = $request->input('bill_deliery_date');
       $bill_payment_method = $request->input('bill_payment_method');
       $company_open_bank = $request->input('company_open_bank');
+    } else {
+      $invoice_raise = $request->input('invoice_raise');
+      $invoice_num = $request->input('invoice_num');
+      $invoice_money = $request->input('invoice_money');
+      $invoice_type = $request->input('invoice_type');
+      $invoice_desc = $request->input('invoice_desc');
     }
     if($action == 'add') {
       $addCustomer = DB::table('laravel_manage_customer')->insert(
@@ -185,13 +195,35 @@ class CustomerController extends Controller
       $company_open_bank,     $customer_id]);
       if($updateCustomerBill) {
         $response = [
-          'message' => '添加成功',
+          'message' => '开单成功',
           'status' => 200
         ];
         return Response::json($response);
       } else {
         $response = [
-          'message' => '添加失败',
+          'message' => '开单失败',
+          'status' => 403
+        ];
+        return Response::json($response);
+      }
+    } else if ($action == 'invoice') {
+      $customer_id = $request->input('customer_id');
+      $updateCustomerInvoice = DB::update('update laravel_manage_customer set 
+      invoice_raise = ?,   invoice_num = ?,      
+      invoice_money = ?,   invoice_type = ?, 
+      invoice_desc = ? where customer_id = ?',
+      [$invoice_raise,     $invoice_num, 
+      $invoice_money,      $invoice_type, 
+      $invoice_desc,     $customer_id]);
+      if($updateCustomerInvoice) {
+        $response = [
+          'message' => '保存成功',
+          'status' => 200
+        ];
+        return Response::json($response);
+      } else {
+        $response = [
+          'message' => '保存失败',
           'status' => 403
         ];
         return Response::json($response);
