@@ -18,26 +18,34 @@ class CustomerController extends Controller
   {
     try {
       $page = input::get('page');
-      $size = input::get('size');
-      $keyword = input::get('keyword');
-      $dataStart = ($page-1)*$size;
-      // $user = DB::select("select name,phone,email,department,isSuperAdmin from laravel_manage_customer limit {$dataStart},{$size}");
-      $customer = DB::table('laravel_manage_customer')
-      ->select('*')
-      ->where('customer_name', 'like', '%'.$keyword.'%')
-      ->orWhere('customer_contacts', 'like', '%'.$keyword.'%')
-      ->orWhere('user_name', 'like', '%'.$keyword.'%')
-      ->orWhere('bill_order_num', 'like', '%'.$keyword.'%')
-      ->offset($dataStart)
-      ->limit($size)
-      ->get();
-      $count = DB::table('laravel_manage_customer')
-      ->select('*')
-      ->where('customer_name', 'like', '%'.$keyword.'%')
-      ->orWhere('customer_contacts', 'like', '%'.$keyword.'%')
-      ->orWhere('user_name', 'like', '%'.$keyword.'%')
-      ->orWhere('bill_order_num', 'like', '%'.$keyword.'%')
-      ->count();
+      if($page != '') {
+        $size = input::get('size');
+        $keyword = input::get('keyword');
+        $dataStart = ($page-1)*$size;
+        // $user = DB::select("select name,phone,email,department,isSuperAdmin from laravel_manage_customer limit {$dataStart},{$size}");
+        $customer = DB::table('laravel_manage_customer')
+        ->select('*')
+        ->where('customer_name', 'like', '%'.$keyword.'%')
+        ->orWhere('customer_contacts', 'like', '%'.$keyword.'%')
+        ->orWhere('user_name', 'like', '%'.$keyword.'%')
+        ->orWhere('bill_order_num', 'like', '%'.$keyword.'%')
+        ->offset($dataStart)
+        ->limit($size)
+        ->get();
+        $count = DB::table('laravel_manage_customer')
+        ->select('*')
+        ->where('customer_name', 'like', '%'.$keyword.'%')
+        ->orWhere('customer_contacts', 'like', '%'.$keyword.'%')
+        ->orWhere('user_name', 'like', '%'.$keyword.'%')
+        ->orWhere('bill_order_num', 'like', '%'.$keyword.'%')
+        ->count();
+      } else {
+        $customer = DB::table('laravel_manage_customer')
+        ->get();
+        $count = DB::table('laravel_manage_customer')
+        ->count();
+      }
+      
       $response = [
         'data' => $customer,
         'total' => $count
