@@ -18,7 +18,8 @@ class CustomerController extends Controller
   {
     try {
       $page = input::get('page');
-      if($page != '') {
+      $signed = input::get('signed');
+      if($page != '' && $signed == '') {
         $size = input::get('size');
         $keyword = input::get('keyword');
         $dataStart = ($page-1)*$size;
@@ -39,6 +40,25 @@ class CustomerController extends Controller
         ->orWhere('user_name', 'like', '%'.$keyword.'%')
         ->orWhere('bill_order_num', 'like', '%'.$keyword.'%')
         ->count();
+      } else if($page != '' && $signed == 'yes') {
+        $size = input::get('size');
+        $keyword = input::get('keyword');
+        $dataStart = ($page-1)*$size;
+        $customer2 = DB::table('laravel_manage_customer')
+        ->select('*')
+        ->where('customer_name', 'like', '%'.$keyword.'%')
+        ->orWhere('customer_contacts', 'like', '%'.$keyword.'%')
+        ->orWhere('user_name', 'like', '%'.$keyword.'%')
+        ->orWhere('bill_order_num', 'like', '%'.$keyword.'%')
+        // ->orWhere('bill_order_num',null)
+        ->offset($dataStart)
+        ->limit($size)
+        ->get();
+        $customer = json_decode($customer2,true);
+        $customer = array_filter($customer, function($el) {
+          return $el['bill_order_num'] != null;
+        });
+        $count = count($customer);
       } else {
         $customer = DB::table('laravel_manage_customer')
         ->get();
@@ -119,7 +139,7 @@ class CustomerController extends Controller
         // 'customer_placenature' => $customer_placenature, 
 
         'customer_phone' => $customer_phone,       'customer_area' => $customer_area, 
-        'customer_website' => $customer_website,   'customer_email' => $customer_email, 
+        'customer_email' => $customer_email, 
         'moveDate' => $moveDate,                   
         // 'company_tax_num' => $company_tax_num, 
 
