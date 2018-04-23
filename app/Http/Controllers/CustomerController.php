@@ -59,7 +59,15 @@ class CustomerController extends Controller
           return $el['bill_order_num'] != null;
         });
         $count = count($customer);
-      } else {
+      } else if($page == '' && $signed == 'yes') {
+        $customer2 = DB::table('laravel_manage_customer')
+        ->get();
+        $customer = json_decode($customer2,true);
+        $customer = array_filter($customer, function($el) {
+          return $el['bill_order_num'] != null;
+        });
+        $count = count($customer);
+      } else if($page == '' && $signed == '') {
         $customer = DB::table('laravel_manage_customer')
         ->get();
         $count = DB::table('laravel_manage_customer')
