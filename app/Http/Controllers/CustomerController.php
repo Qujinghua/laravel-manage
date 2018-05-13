@@ -29,7 +29,7 @@ class CustomerController extends Controller
         ->where('customer_name', 'like', '%'.$keyword.'%')
         ->orWhere('customer_contacts', 'like', '%'.$keyword.'%')
         ->orWhere('user_name', 'like', '%'.$keyword.'%')
-        ->orWhere('bill_order_num', 'like', '%'.$keyword.'%')
+        // ->orWhere('bill_order_num', 'like', '%'.$keyword.'%')
         ->offset($dataStart)
         ->limit($size)
         ->get();
@@ -38,7 +38,7 @@ class CustomerController extends Controller
         ->where('customer_name', 'like', '%'.$keyword.'%')
         ->orWhere('customer_contacts', 'like', '%'.$keyword.'%')
         ->orWhere('user_name', 'like', '%'.$keyword.'%')
-        ->orWhere('bill_order_num', 'like', '%'.$keyword.'%')
+        // ->orWhere('bill_order_num', 'like', '%'.$keyword.'%')
         ->count();
       } else if($page != '' && $signed == 'yes') {
         $size = input::get('size');
@@ -49,24 +49,24 @@ class CustomerController extends Controller
         ->where('customer_name', 'like', '%'.$keyword.'%')
         ->orWhere('customer_contacts', 'like', '%'.$keyword.'%')
         ->orWhere('user_name', 'like', '%'.$keyword.'%')
-        ->orWhere('bill_order_num', 'like', '%'.$keyword.'%')
+        // ->orWhere('bill_order_num', 'like', '%'.$keyword.'%')
         // ->orWhere('bill_order_num',null)
         ->offset($dataStart)
         ->limit($size)
         ->get();
-        $customer = json_decode($customer2,true);
-        $customer = array_filter($customer, function($el) {
-          return $el['bill_order_num'] != null;
-        });
-        $count = count($customer);
+        // $customer = json_decode($customer2,true);
+        // $customer = array_filter($customer, function($el) {
+        //   return $el['bill_order_num'] != null;
+        // });
+        $count = count($customer2);
       } else if($page == '' && $signed == 'yes') {
         $customer2 = DB::table('laravel_manage_customer')
         ->get();
-        $customer = json_decode($customer2,true);
-        $customer = array_filter($customer, function($el) {
-          return $el['bill_order_num'] != null;
-        });
-        $count = count($customer);
+        // $customer = json_decode($customer2,true);
+        // $customer = array_filter($customer, function($el) {
+        //   return $el['bill_order_num'] != null;
+        // });
+        $count = count($customer2);
       } else if($page == '' && $signed == '') {
         $customer = DB::table('laravel_manage_customer')
         ->get();
@@ -92,32 +92,13 @@ class CustomerController extends Controller
       $user_name = $request->input('user_name');
       $customer_resources = $request->input('customer_resources');
       $customer_name = $request->input('customer_name');
-      // $customer_companynature = $request->input('customer_companynature');
       $customer_contacts = $request->input('customer_contacts');
-      
-      // $customer_placenature = $request->input('customer_placenature');
       $customer_phone = $request->input('customer_phone');
-      $customer_area = $request->input('customer_area');
+      // $customer_area = $request->input('customer_area');
       $customer_website = $request->input('customer_website');
       $customer_email = $request->input('customer_email');
-
-      $moveDate = $request->input('moveDate');
-      // $company_tax_num = $request->input('company_tax_num');
-      // $company_open_bank = $request->input('company_open_bank');
-      // $company_open_account = $request->input('company_open_account');
-      $company_address = $request->input('company_address');
-
-      // $receive_people = $request->input('receive_people');
-      // $project_leader = $request->input('project_leader');
-      // $project_leader_phone = $request->input('project_leader_phone');
-      // $project_leader_email = $request->input('project_leader_email');
-      // $design_company_name = $request->input('design_company_name');
-
-      // $design_people = $request->input('design_people');
-      // $design_people_phone = $request->input('design_people_phone');
-      // $design_people_email = $request->input('design_people_email');
-      // $project_address = $request->input('project_address');
-      // $demand_survey = $request->input('demand_survey');
+      // $moveDate = $request->input('moveDate');
+      // $company_address = $request->input('company_address');
     } else if($action=='bill') {
       $bill_order_num = $request->input('bill_order_num');
       $bill_sale_date = $request->input('bill_sale_date');
@@ -142,24 +123,12 @@ class CustomerController extends Controller
       $addCustomer = DB::table('laravel_manage_customer')->insert(
         ['inputDate' => $inputDate, 'user_name' => $user_name, 'customer_resources' => $customer_resources, 
         'customer_name' => $customer_name,         
-        // 'customer_companynature' => $customer_companynature, 
         'customer_contacts' => $customer_contacts, 
-        // 'customer_placenature' => $customer_placenature, 
-
-        'customer_phone' => $customer_phone,       'customer_area' => $customer_area, 
+        'customer_phone' => $customer_phone,       
+        // 'customer_area' => $customer_area, 
         'customer_email' => $customer_email, 
-        'moveDate' => $moveDate,                   
-        // 'company_tax_num' => $company_tax_num, 
-
-        // 'company_open_bank' => $company_open_bank, 'company_open_account' => $company_open_account, 
-        'company_address' => $company_address,     
-        // 'receive_people' => $receive_people, 
-        // 'project_leader' => $project_leader,       'project_leader_phone' => $project_leader_phone, 
-
-        // 'project_leader_email' => $project_leader_email, 'design_company_name' => $design_company_name, 
-        // 'design_people' => $design_people, 'design_people_phone' => $design_people_phone, 
-        // 'design_people_email' => $design_people_email, 'project_address' => $project_address, 
-        // 'demand_survey' => $demand_survey
+        // 'moveDate' => $moveDate,                   
+        // 'company_address' => $company_address,     
          ]
       );
       if($addCustomer) {
@@ -181,17 +150,14 @@ class CustomerController extends Controller
       inputDate = ?,            user_name = ?,     customer_resources = ?, 
       customer_name = ?,        
       customer_contacts = ?,    
-      customer_phone = ?,       customer_area = ?, 
-      customer_email = ?, 
-      moveDate = ?,              
-      company_address = ? where customer_id = ?',
+      customer_phone = ?,     
+      customer_email = ? where customer_id = ?',
       [$inputDate, $user_name,  $customer_resources, 
       $customer_name,         
       $customer_contacts,    
-      $customer_phone,       $customer_area, 
+      $customer_phone,       
       $customer_email, 
-      $moveDate,             
-      $company_address,      $customer_id]);
+      $customer_id]);
       if($updateCustomer) {
         $response = [
           'message' => '编辑成功',

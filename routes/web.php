@@ -47,6 +47,11 @@ Route::group(['middleware' => ['checklogin','web']], function () {
     Route::any('/config/getGoodsExhibition', 'GoodsController@getGoodsExhibition');  // 获取商品
     Route::any('/config/updateGoods', 'GoodsController@updateGoods');  // 新增商品
     Route::any('/config/delGoods', 'GoodsController@delGoods');  // 新增商品
+
+    Route::any('/config/getOrder', 'OrderController@getOrder');  // 新增商品
+    Route::any('/config/updateOrder', 'OrderController@updateOrder');  // 新增商品
+    Route::any('/config/delOrder', 'OrderController@delOrder');  // 新增商品
+
     Route::any('/config/test2', 'UserController@test2');
 });
 
