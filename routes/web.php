@@ -45,12 +45,11 @@ Route::group(['middleware' => ['checklogin','web']], function () {
     Route::any('/config/deleteFile', 'GoodsController@deleteFile');  // 删除图片
     Route::any('/config/getGoods', 'GoodsController@getGoods');  // 获取商品
     Route::any('/config/getGoodsExhibition', 'GoodsController@getGoodsExhibition');  // 获取商品
-    Route::any('/config/updateGoods', 'GoodsController@updateGoods');  // 新增商品
-    Route::any('/config/delGoods', 'GoodsController@delGoods');  // 新增商品
-
-    Route::any('/config/getOrder', 'OrderController@getOrder');  // 新增商品
-    Route::any('/config/updateOrder', 'OrderController@updateOrder');  // 新增商品
-    Route::any('/config/delOrder', 'OrderController@delOrder');  // 新增商品
+    Route::any('/config/updateGoods', 'GoodsController@updateGoods');  // 编辑商品
+    Route::any('/config/delGoods', 'GoodsController@delGoods');  // 删除商品
+    Route::any('/config/getOrder', 'OrderController@getOrder');  // 获取订单
+    Route::any('/config/updateOrder', 'OrderController@updateOrder');  // 编辑订单
+    Route::any('/config/delOrder', 'OrderController@delOrder');  // 删除订单
 
     Route::any('/config/test2', 'UserController@test2');
 });
